@@ -82,9 +82,6 @@ describe('UserService', () => {
 
       const result = await userService.update(id, userId, partialUser);
 
-      console.log('it :: result:', result);
-      console.log('it :: updatedUser:', updatedUser);
-
       expect(result).toEqual(updatedUser);
     });
   });
