@@ -1,8 +1,30 @@
+import Auth from './models/auth';
 import { User } from './models/user';
 
 export class UserRepository {
   public async findAll(): Promise<User[]> {
-    return User.findAll();
+    return User.findAll({
+      include: [
+        {
+          model: Auth,
+          as: 'createdBy',
+          attributes: ['id', 'username'],
+        },
+        {
+          model: Auth,
+          as: 'updatedBy',
+          attributes: ['id', 'username'],
+        },
+        {
+          model: Auth,
+          as: 'deletedBy',
+          attributes: ['id', 'username'],
+        },
+      ],
+      attributes: {
+        exclude: ['created_by', 'updated_by', 'deleted_by'],
+      },
+    });
   }
 
   public async createUser(user: Partial<User>): Promise<User> {
@@ -10,7 +32,28 @@ export class UserRepository {
   }
 
   public async getUserById(id: string): Promise<User | null> {
-    return User.findByPk(id);
+    return User.findByPk(id, { 
+      include: [
+        {
+          model: Auth,
+          as: 'createdBy',
+          attributes: ['id', 'username'],
+        },
+        {
+          model: Auth,
+          as: 'updatedBy',
+          attributes: ['id', 'username'],
+        },
+        {
+          model: Auth,
+          as: 'deletedBy',
+          attributes: ['id', 'username'],
+        },
+      ],
+      attributes: {
+        exclude: ['created_by', 'updated_by', 'deleted_by'],
+      },
+    });
   }
 
   public async updateUser(id: string, user: Partial<User>): Promise<User | null> {

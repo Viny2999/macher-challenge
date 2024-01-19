@@ -18,8 +18,8 @@ export class HealthCheckService {
   };
 
   private getHumanDate = (): string => {
-    const secondsToMilliseconds = seconds => seconds * 1000;
-    const momentFormat = seconds => moment.utc(secondsToMilliseconds(seconds)).format('HH:mm');
+    const secondsToMilliseconds = (seconds: number) => seconds * 1000;
+    const momentFormat = (seconds: number) => moment.utc(secondsToMilliseconds(seconds)).format('HH:mm');
     return momentFormat(process.uptime());
   };
 }

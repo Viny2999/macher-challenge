@@ -61,6 +61,10 @@ module.exports = {
       created_by: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: 'auth',
+          key: 'id',
+        },
       },
       updated_at: {
         type: Sequelize.DATE,
@@ -69,6 +73,10 @@ module.exports = {
       updated_by: {
         type: Sequelize.INTEGER,
         allowNull: true,
+        references: {
+          model: 'auth',
+          key: 'id',
+        },
       },
       deleted_at: {
         type: Sequelize.DATE,
@@ -77,6 +85,10 @@ module.exports = {
       deleted_by: {
         type: Sequelize.INTEGER,
         allowNull: true,
+        references: {
+          model: 'auth',
+          key: 'id',
+        },
       },
     });
   },

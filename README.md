@@ -17,4 +17,3 @@ To start jest unit tests run:
 ```
 npm test
 ```
-# macher-challenge

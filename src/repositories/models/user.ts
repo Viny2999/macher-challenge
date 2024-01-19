@@ -1,5 +1,6 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../../db/config/db.config';
+import Auth from './auth';
 
 export class User extends Model {
   public id!: number;
@@ -14,12 +15,16 @@ export class User extends Model {
   public state!: string;
   public zip_code!: string;
   public status!: boolean;
-  public creation_date!: Date;
-  public creation_user!: number;
-  public update_date!: Date | null;
-  public update_user!: number | null;
-  public delete_date!: Date | null;
-  public delete_user!: number | null;
+  public created_at!: Date;
+  public created_by!: number;
+  public updated_at!: Date | null;
+  public updated_by!: number | null;
+  public deleted_at!: Date | null;
+  public deleted_by!: number | null;
+
+  public readonly createdBy?: Auth;
+  public readonly updatedBy?: Auth;
+  public readonly deletedBy?: Auth;
 }
 
 User.init(
@@ -81,6 +86,10 @@ User.init(
     created_by: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      references: {
+        model: 'auth',
+        key: 'id',
+      },
     },
     updated_at: {
       type: DataTypes.DATE,
@@ -89,6 +98,10 @@ User.init(
     updated_by: {
       type: DataTypes.INTEGER,
       allowNull: true,
+      references: {
+        model: 'auth',
+        key: 'id',
+      },
     },
     deleted_at: {
       type: DataTypes.DATE,
@@ -97,12 +110,21 @@ User.init(
     deleted_by: {
       type: DataTypes.INTEGER,
       allowNull: true,
+      references: {
+        model: 'auth',
+        key: 'id',
+      },
     },
   },
   {
     tableName: 'users',
+    timestamps: false,
     sequelize,
   }
 );
+
+User.belongsTo(Auth, { foreignKey: 'created_by', as: 'createdBy' });
+User.belongsTo(Auth, { foreignKey: 'updated_by', as: 'updatedBy' });
+User.belongsTo(Auth, { foreignKey: 'deleted_by', as: 'deletedBy' });
 
 export default User;
