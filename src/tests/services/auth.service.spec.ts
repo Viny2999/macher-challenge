@@ -19,7 +19,7 @@ describe('AuthService', () => {
       const user = { id: 1, username, password: bcrypt.hashSync(password, 10) };
       jest.spyOn(authRepository, 'findByUsername').mockResolvedValue(user);
       jest.spyOn(bcrypt, 'compareSync').mockReturnValue(true);
-      jest.spyOn(jwt, 'sign').mockReturnValueOnce();
+      jest.spyOn(jwt, 'sign').mockReturnValue('token');
 
       await authService.login(username, password);
 
