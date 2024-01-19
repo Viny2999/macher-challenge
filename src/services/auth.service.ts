@@ -1,27 +1,34 @@
 import bcrypt from 'bcrypt';
-import * as httpsStatus from 'http-status';
-import { Request, Response } from 'express';
-import { AuthRepository } from '../repositories/auth.repository';
 import jwt from 'jsonwebtoken';
 import * as dotenv from 'dotenv';
+import { IAuthRepository } from '../types/IAuthRepository';
 dotenv.config();
 
-const authRepository = new AuthRepository();
-
 export class AuthService {
+  private authRepository: IAuthRepository<any>;
 
-  public login = async (req: Request, res: Response): Promise<Response> => {
-    const { username, password } = req.body;
+  constructor(authRepository: IAuthRepository<any>) {
+    this.authRepository = authRepository;
+  }
 
-    const user = await authRepository.findByUsername(username);
+  public login = async (username: string, password: string) => {
+    const user = await this.authRepository.findByUsername(username);
     if (user) {
-      const passwordMatch = await bcrypt.compare(password, user.password);
+      const passwordMatch = bcrypt.compareSync(password, user.password);
       if (passwordMatch) {
-        const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
-        return res.send({ token });
+        return {
+          success: true, 
+          message: jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN })
+        };
       }
-      return res.status(httpsStatus.UNAUTHORIZED).send({ message: 'Invalid password' });
+      return {
+        success: false, 
+        message: 'Invalid password'
+      };
     }
-    return res.status(httpsStatus.UNAUTHORIZED).send({ message: 'User doesn\'t exist' });
+    return {
+      success: false, 
+      message: 'User doesn\'t exist'
+    };
   };
 }

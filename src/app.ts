@@ -1,4 +1,4 @@
-import { Routes } from './controllers/v1';
+import { Routes } from './routes/v1';
 import express, { Request, Response } from 'express';
 import { LoggerService } from './services';
 import * as dotenv from 'dotenv';

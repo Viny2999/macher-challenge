@@ -1,9 +1,13 @@
+import { Request, Response } from 'express';
 import { HealthCheckService } from '../../services';
-import { Router } from 'express';
 
-const router = Router();
 const healthCheckService = new HealthCheckService();
 
-router.get('/', healthCheckService.checkHealth);
+export class HealthCheckController {
+  public checkHealth = (req: Request, res: Response): Response => {
 
-export const HealthCheckController: Router = router;
+    const healthBody = healthCheckService.checkHealth();
+
+    return res.send(healthBody);
+  };
+}

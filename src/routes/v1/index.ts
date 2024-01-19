@@ -1,22 +1,22 @@
 import { Router } from 'express';
-import { AuthController } from './auth.controller';
-import { HealthCheckController } from './health-check.controller';
-import { UserController } from './user.controller';
+import { AuthRoute } from './auth.route';
+import { HealthCheckRoute } from './health-check.route';
+import { UserRoute } from './user.route';
 
 const router = Router();
 
 const defaultRoutes = [
   {
     path: '/auth',
-    route: AuthController,
+    route: AuthRoute,
   },
   {
     path: '/health',
-    route: HealthCheckController,
+    route: HealthCheckRoute,
   },
   {
     path: '/user',
-    route: UserController,
+    route: UserRoute,
   },
 ];
 

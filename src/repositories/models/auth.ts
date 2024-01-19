@@ -7,6 +7,13 @@ class Auth extends Model {
   declare password: string;
 }
 
+export interface AuthModel extends Model {
+  id: number;
+  username: string;
+  password: string;
+}
+
+
 Auth.init(
   {
     id: {
